@@ -1,26 +1,42 @@
 import { defineConfig } from "vite";
 // vite.config.js
 export default defineConfig({
+	server: {
+		port: 3030,
+	},
 	build: {
 		// generate .vite/manifest.json in outDir
 		manifest: true,
 		assetsDir: './',
-		outDir: 'dist',
+		outDir: 'assets/dist',
 		rollupOptions: {
-			// overwrite default .html entry
 			input: {
 				'admin': '/assets/src/admin.js',
-				'front': '/assets/src/admin.scss'
+				'front': '/assets/src/front.js'
 			},
 			output: {
-				'admin.js': '/assets/js/admin.min.js',
-				'front.js': '/assets/js/front.min.js',
-
-				// overwrite default .html entry
-				// entryFileNames: '[name].js',
-				// assetFileNames: '[name][extname]',
-				// chunkFileNames: '[name].js',
+				entryFileNames: '[name].js',
+				assetFileNames: '[name][extname]',
+				chunkFileNames: '[name].min.[extname]',
 			},
+			/*
+			output: [
+				{
+					dir: 'assets/dist/js',
+					format: 'es',
+					entryFileNames: '[name].min.js',
+					chunkFileNames: '[name]-[hash].min.js',
+					assetFileNames: '[name][extname]',
+				},
+				{
+					dir: 'assets/dist/css',
+					format: 'es',
+					entryFileNames: '[name].min.css',
+					chunkFileNames: '[name]-[hash].min.css',
+					assetFileNames: '[name][extname]',
+				},
+			],
+			*/
 		},
 	},
 

@@ -50,13 +50,12 @@ class Vite {
 	public function __construct() {
 		$this->is_dev = 'dev'; // prod .
 		// Set the path to the manifest.json file.
-		$this->manifest_path  = EC_PLUGIN_PATH . '/public/.vite/manifest.json';
-		$this->dev_server     = 'http://localhost:5173/'; // Adjust the URL according to your Vite dev server configuration.
+		$this->manifest_path  = EC_PLUGIN_PATH . '/assets/dist/.vite/manifest.json';
+		$this->dev_server     = 'http://localhost:3030/'; // Adjust the URL according to your Vite dev server configuration.
 		$this->dev_server_url = $this->dev_server . 'assets/index.php'; // Adjust the URL according to your Vite dev server configuration.
-
 		// Add actions to enqueue assets.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-		// Consider adding admin assets with `add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );`
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		// Consider adding admin assets with `add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );`.
 	}
 
 	/**
@@ -68,7 +67,7 @@ class Vite {
 			$this->enqueue_dev_assets();
 		} else {
 			// Enqueue production assets.
-			$this->enqueue_prod_assets();
+			// $this->enqueue_prod_assets();
 		}
 	}
 
@@ -81,7 +80,7 @@ class Vite {
 		$response = wp_remote_get( $this->dev_server_url );
 		if ( ! is_wp_error( $response ) ) {
 			$status_code = wp_remote_retrieve_response_code( $response );
-			return $status_code === 200;
+			return 200 === $status_code;
 		}
 		return false;
 	}
@@ -96,7 +95,7 @@ class Vite {
 		// die;
 
 		if ( $this->is_dev_server_running() ) {
-			wp_enqueue_script( 'vite-main', $this->dev_server . 'assets/js/main.js', array(), null, true );
+			wp_enqueue_script( 'vite-admin', $this->dev_server . 'assets/src/admin.js', array(), null, true );
 			// Add type="module" attribute to the script tag
 			add_filter( 'script_loader_tag', array( $this, 'add_module_type_to_script' ), 10, 3 );
 		} else {
@@ -106,7 +105,9 @@ class Vite {
 	}
 
 	public function add_module_type_to_script( $tag, $handle, $src ) {
-		if ( 'vite-main' === $handle ) {
+		// if ( 'vite-main' === $handle ) {
+
+		if ( in_array( $handle, array( 'vite-admin' ) ) ) {
 			$tag = str_replace( '<script', '<script type="module"', $tag );
 		}
 		return $tag;
@@ -118,13 +119,11 @@ class Vite {
 	private function enqueue_prod_assets() {
 		// Get the manifest data.
 		$manifest_data = $this->get_manifest_data();
-		// echo '<pre>';
-		// print_r($manifest_data);
 
 		if ( $manifest_data ) {
 			// Enqueue CSS and JS assets.
-			$this->enqueue_css( $manifest_data );
-			$this->enqueue_js( $manifest_data );
+			$this->enqueue_css();
+			$this->enqueue_js();
 		}
 	}
 
@@ -149,25 +148,15 @@ class Vite {
 
 	/**
 	 * Enqueue CSS assets.
-	 *
-	 * @param array $manifest_data Manifest data.
 	 */
-	private function enqueue_css( $manifest_data ) {
-		if ( isset( $manifest_data['assets/scss/index.scss'] ) ) {
-			$css_asset = $manifest_data['assets/scss/index.scss']['file'];
-			wp_enqueue_style( 'vite-style', RRP_PLUGIN_URL . '/public/' . $css_asset, array(), '1.0.0' );
-		}
+	private function enqueue_css() {
+		wp_enqueue_style( 'vite-admin-style', EC_PLUGIN_URL . '/assets/dist/admin.css', array(), '1.0.0' );
 	}
 
 	/**
 	 * Enqueue JS assets.
-	 *
-	 * @param array $manifest_data Manifest data.
 	 */
-	private function enqueue_js( $manifest_data ) {
-		if ( isset( $manifest_data['assets/js/main.js'] ) ) {
-			$js_asset = $manifest_data['assets/js/main.js']['file'];
-			wp_enqueue_script( 'vite-main', RRP_PLUGIN_URL . '/public/' . $js_asset, array(), '1.0.0', true );
-		}
+	private function enqueue_js() {
+		wp_enqueue_script( 'vite-admin-script', EC_PLUGIN_URL . '/assets/dist/admin.js', array(), '1.0.0', true );
 	}
 }

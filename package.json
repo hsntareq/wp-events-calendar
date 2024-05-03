@@ -3,7 +3,13 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "vite.config.js",
+	"type": "module",
 	"dependencies": {
+		"rollup-plugin-copy": "^3.5.0",
+		"rollup-plugin-rename": "^1.0.1",
+		"rollup-plugin-replace": "^2.2.0",
+		"rollup-plugin-url": "^3.0.1",
+		"rollup-pluginutils": "^2.8.2",
 		"vite": "^5.1.6"
 	},
 	"scripts": {

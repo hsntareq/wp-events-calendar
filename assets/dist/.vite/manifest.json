@@ -1,0 +1,20 @@
+{
+  "assets/src/admin.js": {
+    "file": "admin.js",
+    "name": "admin",
+    "src": "assets/src/admin.js",
+    "isEntry": true,
+    "css": [
+      "admin.css"
+    ]
+  },
+  "assets/src/front.js": {
+    "file": "front.js",
+    "name": "front",
+    "src": "assets/src/front.js",
+    "isEntry": true,
+    "css": [
+      "front.css"
+    ]
+  }
+}

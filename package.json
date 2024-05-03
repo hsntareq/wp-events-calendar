@@ -1,0 +1,20 @@
+{
+	"name": "events-calender",
+	"version": "1.0.0",
+	"description": "",
+	"main": "vite.config.js",
+	"dependencies": {
+		"vite": "^5.1.6"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"sass": "^1.72.0"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}

@@ -48,8 +48,8 @@ final class PluginMain {
 	 * Register hooks and do other setup tasks.
 	 */
 	private function register_hooks() {
-		register_activation_hook( EC_PLUGIN_FILE, array( $this, 'activate' ) );
-		register_deactivation_hook( EC_PLUGIN_FILE, array( $this, 'deactivate' ) );
+		register_activation_hook( EC_PLUGIN_FILE, array( $this, 'plugin_activation' ) );
+		register_deactivation_hook( EC_PLUGIN_FILE, array( $this, 'plugin_deactivation' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 	}
@@ -83,7 +83,7 @@ final class PluginMain {
 	/**
 	 * Run code when the plugin is activated
 	 */
-	public function activate() {
+	public function plugin_activation() {
 
 		$installed = get_option( 'rrp_plugin_installed' );
 
@@ -91,12 +91,12 @@ final class PluginMain {
 			update_option( 'rrp_plugin_installed', time() );
 		}
 
-		update_option( 'rrp_plugin_version', self::PLUGIN_VERSION );
+		update_option( 'rrp_plugin_version', EC_PLUGIN_VERSION );
 	}
 	/**
 	 * Run code when the plugin is activated
 	 */
-	public function deactivate() {
+	public function plugin_deactivation() {
 
 		delete_option( 'rrp_plugin_installed' );
 		delete_option( 'rrp_plugin_version' );

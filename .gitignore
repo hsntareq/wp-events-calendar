@@ -1,0 +1,9 @@
+/vendor/
+.DS_Store
+.idea/
+composer-lock.json
+.git
+.vscode/
+node_modules/
+*.lock
+

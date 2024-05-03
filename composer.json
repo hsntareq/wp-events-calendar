@@ -1,0 +1,27 @@
+{
+	"name": "hasan/events-calender",
+	"description": "A WordPress calender event plugin.",
+	"type": "wordpress-plugin",
+	"license": "GPLv2",
+	"version": "1.0.0",
+	"autoload": {
+		"psr-4": {
+			"EventsCalender\\": "inc/"
+		},
+		"files": [
+			"inc/helpers.php"
+		]
+	},
+	"authors": [
+		{
+			"name": "Hasan Tareq",
+			"email": "hsntareq@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"require": {},
+	"scripts": {
+		"lint": "phpcs",
+		"lint:fix": "phpcbf"
+	}
+}

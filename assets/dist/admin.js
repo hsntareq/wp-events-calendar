@@ -1,1 +1,1 @@
-console.log("admin.1 loaded!");console.log("admin.2 loaded!");console.log("admin.3 loaded!");
+const e=document.querySelector(".events-calendar-wrap");var c=e&&e.querySelector(".ec-prev");e&&e.querySelector(".ec-next");c.addEventListener("click",function(r){console.log("prev clicked")});

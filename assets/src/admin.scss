@@ -1,3 +1,119 @@
 body {
-	background-color: green;
+	// background-color: green;
+}
+
+.events-calendar-wrap {
+	.ec-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 30px;
+
+		h2 {
+			margin: 0;
+		}
+	}
+
+
+	.events-calendar-body {
+		padding-block-start: 30px;
+		height: calc(100vh - 180px);
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			height: 100%;
+
+			th,
+			td {
+				border: 1px solid black;
+				padding: 10px;
+				text-align: left;
+				position: relative;
+				width: 14.2857143%;
+			}
+
+			td {
+				&:hover {
+					div {
+						overflow: visible;
+
+						ul {
+							z-index: 10;
+
+							li {
+								box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+								border: 1px solid #000;
+
+								a {
+									&:hover {
+										text-decoration: underline;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				div {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					height: 100%;
+					position: relative;
+					bottom: 0;
+					overflow: hidden;
+					height: calc(100% - 10px);
+
+					ul {
+						position: absolute;
+						bottom: 0;
+						z-index: 9;
+						margin: 0;
+
+						li {
+							background-color: #2196f3;
+							border-radius: 3px;
+							padding-block: 3px;
+							padding-inline-start: 5px;
+							padding-inline-end: 2px;
+							display: inline-block;
+							white-space: nowrap;
+							border: 1px solid transparent;
+
+							a {
+								text-decoration: none;
+								color: white;
+							}
+
+							a.edit {
+								background: gray;
+								margin-left: 5px;
+								padding: 3px;
+							}
+						}
+					}
+
+					span {
+						align-self: flex-end;
+						justify-self: flex-start;
+					}
+				}
+
+
+
+				&.today {
+					background-color: #dfdfdf;
+				}
+			}
+
+			th {
+				background-color: #f2f2f2;
+			}
+		}
+
+
+
+
+	}
 }

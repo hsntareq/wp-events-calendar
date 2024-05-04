@@ -3,7 +3,7 @@
  * Plugin File: AM API
  * Description: This plugin will show related random posts under each post.
  *
- * @package wp-plugin
+ * @package wordpress-plugin
  * @since 1.0
  */
 
@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * PluginMain Class
+ * Plugin_Main Class
  */
-final class PluginMain {
+final class Plugin_Main {
 	use Traits\Singleton, Traits\PluginData;
 
 	/**
@@ -41,6 +41,7 @@ final class PluginMain {
 		// Defining plugin constants.
 		$this->define_constants();
 		Vite::get_instance();
+		Post_Type::get_instance();
 		Admin_Page::get_instance();
 
 	}

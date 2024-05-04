@@ -24,13 +24,6 @@ class Vite {
 	private $manifest_path;
 
 	/**
-	 * Whether the environment is in development mode.
-	 *
-	 * @var bool
-	 */
-	private $is_dev;
-
-	/**
 	 * Vite development server URL (if available).
 	 *
 	 * @var string|null
@@ -48,7 +41,6 @@ class Vite {
 	 * Vite constructor.
 	 */
 	public function __construct() {
-		$this->is_dev = 'dev'; // prod .
 		// Set the path to the manifest.json file.
 		$this->manifest_path  = EC_PLUGIN_PATH . '/assets/dist/.vite/manifest.json';
 		$this->dev_server     = 'http://localhost:3030/'; // Adjust the URL according to your Vite dev server configuration.
@@ -62,13 +54,22 @@ class Vite {
 	 * Enqueue assets.
 	 */
 	public function enqueue_assets() {
+
 		if ( $this->is_dev_server_running() ) {
 			// Enqueue assets from Vite dev server.
 			$this->enqueue_dev_assets();
 		} else {
 			// Enqueue production assets.
-			// $this->enqueue_prod_assets();
+			$this->enqueue_prod_assets();
 		}
+
+		wp_localize_script( 'vite-admin-script',
+			'ec_data',
+			array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'ec_nonce' ),
+			)
+		);
 	}
 
 	/**
@@ -77,12 +78,18 @@ class Vite {
 	 * @return bool True if reachable, false otherwise.
 	 */
 	public function is_dev_server_running() {
-		$response = wp_remote_get( $this->dev_server_url );
-		if ( ! is_wp_error( $response ) ) {
-			$status_code = wp_remote_retrieve_response_code( $response );
-			return 200 === $status_code;
+		try {
+			// Check if the Vite development server is reachable.
+			$response = wp_remote_get( $this->dev_server_url );
+
+			if ( ( is_wp_error( $response ) ) && ( 200 !== wp_remote_retrieve_response_code( $response ) ) ) {
+				return false;
+			}
+			return true;
+
+		} catch (Exception $ex) {
+			WP_Error( 'error', $ex->getMessage() );
 		}
-		return false;
 	}
 
 
@@ -95,7 +102,7 @@ class Vite {
 		// die;
 
 		if ( $this->is_dev_server_running() ) {
-			wp_enqueue_script( 'vite-admin', $this->dev_server . 'assets/src/admin.js', array(), null, true );
+			wp_enqueue_script( 'vite-admin-script', $this->dev_server . 'assets/src/admin.js', array( 'jquery' ), null, true );
 			// Add type="module" attribute to the script tag
 			add_filter( 'script_loader_tag', array( $this, 'add_module_type_to_script' ), 10, 3 );
 		} else {
@@ -107,7 +114,7 @@ class Vite {
 	public function add_module_type_to_script( $tag, $handle, $src ) {
 		// if ( 'vite-main' === $handle ) {
 
-		if ( in_array( $handle, array( 'vite-admin' ) ) ) {
+		if ( in_array( $handle, array( 'vite-admin-script' ) ) ) {
 			$tag = str_replace( '<script', '<script type="module"', $tag );
 		}
 		return $tag;
@@ -157,6 +164,7 @@ class Vite {
 	 * Enqueue JS assets.
 	 */
 	private function enqueue_js() {
-		wp_enqueue_script( 'vite-admin-script', EC_PLUGIN_URL . '/assets/dist/admin.js', array(), '1.0.0', true );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'vite-admin-script', EC_PLUGIN_URL . '/assets/dist/admin.js', array( 'jquery' ), '1.0.0', true );
 	}
 }

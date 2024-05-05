@@ -18,6 +18,14 @@ After activating the plugin, you can create events using the event post type. Yo
 
 The plugin provides a settings page where you can configure various options, such as the number of related posts to display and the order in which they should be shown.
 
+## Stable Tag
+
+The stable tag for this plugin is dev.
+
 ## License
 
-This plugin is released under the [GPLv2 or later](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+This plugin is released under the GNU General Public License v2 or later. See the [GPLv2 or later](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) file for details.
+
+## Support
+
+For support or questions, please [contact us](mailto:hsntareq@gmail.com).

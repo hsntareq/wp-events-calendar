@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Events Calender
+ * Plugin Name: Events Calendar
  * Plugin URI: https://www.events-calendar.com
  * Version: 1.0.0
  * Author: Hasan Tareq

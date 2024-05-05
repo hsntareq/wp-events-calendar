@@ -15,7 +15,7 @@ use WpdbCrud\Singleton;
  * Class Vite
  */
 class Vite {
-	use Traits\Singleton;
+	use Traits\Singleton, Traits\PluginData;
 	/**
 	 * Path to the manifest.json file.
 	 *
@@ -63,7 +63,8 @@ class Vite {
 			$this->enqueue_prod_assets();
 		}
 
-		wp_localize_script( 'vite-admin-script',
+		wp_localize_script(
+			'vite-admin-script',
 			'ec_data',
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -87,7 +88,7 @@ class Vite {
 			}
 			return true;
 
-		} catch (Exception $ex) {
+		} catch ( Exception $ex ) {
 			WP_Error( 'error', $ex->getMessage() );
 		}
 	}
@@ -97,24 +98,24 @@ class Vite {
 	 * Enqueue development assets from Vite dev server.
 	 */
 	private function enqueue_dev_assets() {
-		// echo '<pre>';
-		// var_dump( $this->is_dev_server_running() );
-		// die;
-
 		if ( $this->is_dev_server_running() ) {
-			wp_enqueue_script( 'vite-admin-script', $this->dev_server . 'assets/src/admin.js', array( 'jquery' ), null, true );
-			// Add type="module" attribute to the script tag
+			wp_enqueue_script( 'vite-admin-script', $this->dev_server . 'assets/src/admin.js', array( 'jquery' ), self::get_data( 'Version' ), true );
+			// Add type="module" attribute to the script tag.
 			add_filter( 'script_loader_tag', array( $this, 'add_module_type_to_script' ), 10, 3 );
-		} else {
-			// Handle case where dev server is not reachable (e.g., display a message)
-			// wp_die( 'Vite development server is not reachable.' );
 		}
 	}
 
+	/**
+	 * Add type="module" to development scripts.
+	 *
+	 * @param mixed $tag tag.
+	 * @param mixed $handle handle.
+	 * @param mixed $src src.
+	 *
+	 * @return string|void
+	 */
 	public function add_module_type_to_script( $tag, $handle, $src ) {
-		// if ( 'vite-main' === $handle ) {
-
-		if ( in_array( $handle, array( 'vite-admin-script' ) ) ) {
+		if ( in_array( $handle, array( 'vite-admin-script' ), true ) ) {
 			$tag = str_replace( '<script', '<script type="module"', $tag );
 		}
 		return $tag;
@@ -142,7 +143,7 @@ class Vite {
 	private function get_manifest_data() {
 		// Read the manifest.json file.
 		if ( file_exists( $this->manifest_path ) ) {
-			$manifest_data = file_get_contents( $this->manifest_path );
+			$manifest_data = wp_remote_get( $this->manifest_path );
 
 			// Decode JSON data.
 			$manifest_data = json_decode( $manifest_data, true );
@@ -157,7 +158,7 @@ class Vite {
 	 * Enqueue CSS assets.
 	 */
 	private function enqueue_css() {
-		wp_enqueue_style( 'vite-admin-style', EC_PLUGIN_URL . '/assets/dist/admin.css', array(), '1.0.0' );
+		wp_enqueue_style( 'vite-admin-style', EC_PLUGIN_URL . '/assets/dist/admin.css', array(), self::get_data( 'Version' ) );
 	}
 
 	/**
@@ -165,6 +166,6 @@ class Vite {
 	 */
 	private function enqueue_js() {
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_script( 'vite-admin-script', EC_PLUGIN_URL . '/assets/dist/admin.js', array( 'jquery' ), '1.0.0', true );
+		wp_enqueue_script( 'vite-admin-script', EC_PLUGIN_URL . '/assets/dist/admin.js', array( 'jquery' ), self::get_data( 'Version' ), true );
 	}
 }

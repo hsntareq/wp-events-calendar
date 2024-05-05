@@ -10,12 +10,18 @@
 	<div class="ec-row">
 		<div class="left">
 			<h1 class="wp-heading-inline"><?php esc_attr_e( 'Events Calendar', 'events-calendar' ); ?></h1>
-			<a href="https://wplugins.test/wp-admin/post-new.php" class="page-title-action">Add New Event</a>
+			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=event' ) ); ?>" class="page-title-action">
+				<?php esc_attr_e( 'Add New Event', 'events-calendar' ); ?>
+			</a>
 		</div>
 		<div class="right ec-row">
-			<button class="button button-secondary ec-prev" id="next-button">Prev</button>
-			<h2>April, 2024</h2>
-			<button class="button button-secondary ec-next" id="previous-button">Next</button>
+			<button class="button button-secondary ec-prev"
+				id="previous-button"><?php esc_attr_e( 'Prev', 'events-calendar' ); ?></button>
+			<h2 id="calendar-heading">
+				<?php echo esc_attr( wp_date( 'M' ) . ', ' . wp_date( 'Y' ) ); ?>
+			</h2>
+			<button class="button button-secondary ec-next"
+				id="next-button"><?php esc_attr_e( 'Next', 'events-calendar' ); ?></button>
 		</div>
 	</div>
 	<hr class="wp-header-end">
@@ -32,55 +38,8 @@
 					<th><?php esc_attr_e( 'Sat', 'events-calendar' ); ?></th>
 				</tr>
 			</thead>
-			<tbody id="calendar-body">
-				<!-- Calendar dates will be inserted here dynamically using JavaScript -->
-				<!-- Calendar code using php  -->
-				<?php
-
-				$today         = new DateTime();
-				$event_year    = $today->format( 'Y' );
-				$month         = $today->format( 'm' );
-				$days_in_month = cal_days_in_month( CAL_GREGORIAN, $month, $event_year );
-				$date          = 1;
-
-				// echo gmdate( 'w', mktime( 0, 0, 0, $month, 4, $event_year ) );
-
-				for ( $i = 0; $i < 6; $i++ ) {
-					echo '<tr>';
-					for ( $j = 0; $j < 7; $j++ ) {
-						if ( 0 === $i && gmdate( 'w', mktime( 0, 0, 0, $month, 1, $event_year ) ) > $j ) {
-							echo '<td></td>';
-						} elseif ( $date > $days_in_month ) {
-							break;
-						} else {
-							$cell_date = $event_year . '-' . $month . '-' . $date;
-							// Add today class if it is today.
-							$today_date  = $today->format( 'd' );
-							$today_month = $today->format( 'm' );
-							$today_year  = $today->format( 'Y' );
-							$today_class = ( $date == $today_date && $month == $today_month && $event_year == $today_year )
-								? 'today' : '';
-							echo '<td class="' . esc_attr( $today_class ) . '">';
-							echo '<div><span>' . esc_attr( $date ) . '</span>';
-							// echo $cell_date;
-							echo self::ec_event_by_date( $cell_date ); //.
-							echo '</div>';
-							echo '</td>';
-							$date++;
-						}
-					}
-					echo '</tr>';
-				}
-				?>
-			</tbody>
+			<!-- $this->generate_monthly_calendar( wp_date( 'Y' ), wp_date( 'm' ) ); -->
+			<tbody id="calendar-body"></tbody>
 		</table>
 	</div>
-
-	<script>
-		// Function to generate calendar
-
-
-		// Call the function to generate the calendar
-		// generateCalendar();
-	</script>
 </div>

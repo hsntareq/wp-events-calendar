@@ -1,3 +1,7 @@
 <?php
-// Silence is golden.
-echo 1111;
+/**
+ * Vite development server URL (if available).
+ *
+ * @package wordpress-plugin
+ */
+

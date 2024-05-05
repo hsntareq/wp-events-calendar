@@ -31,6 +31,15 @@ body {
 				text-align: left;
 				position: relative;
 				width: 14.2857143%;
+
+				span {
+					&.spinner {
+						float: none;
+						width: 50px;
+						height: 50px;
+						background-size: 50px 50px;
+					}
+				}
 			}
 
 			td {
@@ -95,8 +104,14 @@ body {
 					}
 
 					span {
-						align-self: flex-end;
-						justify-self: flex-start;
+						&.spinner {
+							float: none;
+						}
+
+						&:not(.spinner) {
+							align-self: flex-end;
+							justify-self: flex-start;
+						}
 					}
 				}
 

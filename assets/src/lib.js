@@ -2,9 +2,9 @@
 
 export const ajax_request = async (action, data = null) => {
 	// Add nonce to the data object
-	data.nonce = ec_data.ec_nonce;
 	const formData = new FormData();
 	formData.append('action', action);
+	formData.append('nonce', ec_data.nonce);
 	formData.append('data', JSON.stringify(data));
 
 	const response = await fetch(ec_data.ajaxurl, {

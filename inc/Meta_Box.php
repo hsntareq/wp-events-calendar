@@ -30,7 +30,7 @@ class Meta_Box {
 		// Limit meta box to certain post types.
 		$post_types = array( 'event' );
 
-		if ( in_array( $post_type, $post_types ) ) {
+		if ( in_array( $post_type, $post_types, true ) ) {
 			add_meta_box(
 				'events-date-time',
 				__( 'Events Date & Time', 'events-calendar' ),
@@ -74,7 +74,7 @@ class Meta_Box {
 		}
 
 		// Check the user's permissions.
-		if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+		if ( isset( $_POST['post_type'] ) && 'page' === $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_page', $post_id ) ) {
 				return $post_id;
 			}
@@ -84,15 +84,15 @@ class Meta_Box {
 			}
 		}
 
-		// Sanitize the user input.
-		$field_date = ! empty( $_POST['event_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_date'] ) ) : '';
-		$field_time = ! empty( $_POST['event_time'] ) ? sanitize_text_field( wp_unslash( $_POST['event_time'] ) ) : '';
-
-		// Check the value of the meta key and set it.
-		$event_date = ! empty( $field_date ) ? $field_date : date_i18n( 'Y-m-d', 'events-calendar' );
-		$event_time = ! empty( $field_time ) ? $field_time : date_i18n( 'H:i', 'events-calendar' );
+		if ( ! empty( $_POST['event_datetime'] ) ) {
+			$field_datetime = sanitize_text_field( wp_unslash( $_POST['event_datetime'] ) );
+			$event_datetime = explode( 'T', $field_datetime );
+			$event_date     = $event_datetime[0];
+			$event_time     = $event_datetime[1];
+		}
 
 		// Update the meta field.
+		update_post_meta( $post_id, 'event_datetime', $field_datetime );
 		update_post_meta( $post_id, 'event_date', $event_date );
 		update_post_meta( $post_id, 'event_time', $event_time );
 	}
@@ -108,23 +108,27 @@ class Meta_Box {
 		wp_nonce_field( 'ec_post_custom_box', 'ec_post_custom_box_nonce' );
 
 		// Use get_post_meta to retrieve an existing value from the database.
-		$meta_date = get_post_meta( $post->ID, 'event_date', true );
-		$meta_time = get_post_meta( $post->ID, 'event_time', true );
+		$meta_datetime = get_post_meta( $post->ID, 'event_datetime', true );
 
-		// Check the value of the meta key and set it.
-		$event_date = ! empty( $meta_date ) ? $meta_date : date_i18n( 'Y-m-d', 'events-calendar' );
-		$event_time = ! empty( $meta_time ) ? $meta_time : date_i18n( 'H:i', 'events-calendar' );
-
+		if ( ! empty( $meta_datetime ) ) {
+			$event_datetime = explode( 'T', $meta_datetime );
+			$event_date     = $event_datetime[0];
+			$event_time     = $event_datetime[1];
+		} else {
+			// Check the value of the meta key and set it.
+			$meta_datetime = wp_date( 'Y-m-d\TH:i' );
+			$event_date    = date_i18n( 'Y-m-d', 'events-calendar' );
+			$event_time    = date_i18n( 'H:i', 'events-calendar' );
+		}
 		// Display the form, using the current value.
 		?>
+
 		<p>
 			<?php esc_html_e( 'Select the date and time for your event.', 'events-calendar' ); ?>
 		</p>
 		<p>
-			<input type="date" name="event_date" value="<?php echo esc_attr( $event_date ); ?>" />
-		</p>
-		<p>
-			<input type="time" name="event_time" value="<?php echo esc_attr( $event_time ); ?>" />
+			<input type="datetime-local" name="event_datetime" value="<?php echo esc_attr( $meta_datetime ); ?>"
+				min="<?php echo esc_attr( wp_date( 'Y-m-d\TH:i' ) ); ?>" />
 		</p>
 		<?php
 	}

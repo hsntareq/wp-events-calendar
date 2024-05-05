@@ -1,6 +1,6 @@
 {
 	"name": "hasan/events-calendar",
-	"description": "A WordPress calender event plugin.",
+	"description": "A WordPress calendar event plugin.",
 	"type": "wordpress-plugin",
 	"license": "GPLv2",
 	"version": "1.0.0",

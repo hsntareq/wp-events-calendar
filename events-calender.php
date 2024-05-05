@@ -7,7 +7,7 @@
  * Author URI: https://github.com/hsntareq
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: events-calender
+ * Text Domain: events-calendar
  * Description: This plugin will show related random posts under each post.
  *
  * @package wordpress-plugin

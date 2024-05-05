@@ -143,7 +143,7 @@ class Vite {
 	private function get_manifest_data() {
 		// Read the manifest.json file.
 		if ( file_exists( $this->manifest_path ) ) {
-			$manifest_data = wp_remote_get( $this->manifest_path );
+			$manifest_data = file_get_contents( $this->manifest_path ); // phpcs:ignore
 
 			// Decode JSON data.
 			$manifest_data = json_decode( $manifest_data, true );

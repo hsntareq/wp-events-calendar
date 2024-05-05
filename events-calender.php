@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: a Events Calender
+ * Plugin Name: Events Calender
  * Plugin URI: https://www.events-calendar.com
  * Version: 1.0.0
  * Author: Hasan Tareq
@@ -11,7 +11,7 @@
  * Description: This plugin will show related random posts under each post.
  *
  * @package wordpress-plugin
- * @since 1.0
+ * @since 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

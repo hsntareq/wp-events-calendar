@@ -174,7 +174,7 @@ class Admin_Page {
 				$event_time = gmdate( 'g:i A', strtotime( $event_time ) );
 
 				// Display event title or other relevant information.
-				$html .= '<li><a href="' . get_the_permalink() . '">' . $event_time . ': ' . get_the_title() . '</a>';
+				$html .= '<li><a href="' . get_the_permalink() . '">' . esc_attr( $event_time ) . ': ' . get_the_title() . '</a>';
 				$html .= '<a class="edit" href="' . get_edit_post_link( get_the_ID() ) . '">✎</a>';
 				$html .= '</li>';
 			}
@@ -191,7 +191,7 @@ class Admin_Page {
 	 * @return void
 	 */
 	public function add_admin_menu() {
-		add_menu_page( 'Events Calendar', 'Events Calendar', 'manage_options', 'events-calendar', array( $this, 'admin_page' ), 'dashicons-database' );
+		add_menu_page( __( 'Events Calendar' ), __( 'Events Calendar' ), 'manage_options', 'events-calendar', array( $this, 'admin_page' ), 'dashicons-database' );
 	}
 
 	/**

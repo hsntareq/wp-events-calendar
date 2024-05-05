@@ -86,20 +86,20 @@ final class Plugin_Main {
 	 */
 	public function plugin_activation() {
 
-		$installed = get_option( 'rrp_plugin_installed' );
+		$installed = get_option( 'ec_plugin_installed' );
 
 		if ( ! $installed ) {
-			update_option( 'rrp_plugin_installed', time() );
+			update_option( 'ec_plugin_installed', time() );
 		}
 
-		update_option( 'rrp_plugin_version', EC_PLUGIN_VERSION );
+		update_option( 'ec_plugin_version', self::get_data( 'Version' ) );
 	}
 	/**
 	 * Run code when the plugin is activated
 	 */
 	public function plugin_deactivation() {
 
-		delete_option( 'rrp_plugin_installed' );
-		delete_option( 'rrp_plugin_version' );
+		delete_option( 'ec_plugin_installed' );
+		delete_option( 'ec_plugin_version' );
 	}
 }

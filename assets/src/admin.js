@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Event listener for next button
 	let nextButton = document.getElementById('next-button');
 	nextButton && nextButton.addEventListener('click', function () {
-		console.log('next clicked');
 		currentMonth++;
 		if (currentMonth > 12) {
 			currentMonth = 1;
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Event listener for previous button
 	let previousButton = document.getElementById('previous-button');
 	previousButton && previousButton.addEventListener('click', function () {
-		console.log('prev clicked');
 		currentMonth--;
 		if (currentMonth < 1) {
 			currentMonth = 12;

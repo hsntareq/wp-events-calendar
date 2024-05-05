@@ -6,4 +6,4 @@ composer-lock.json
 .vscode/
 node_modules/
 *.lock
-
+*.zip
